@@ -1,1 +1,13 @@
-export class CreateBookCategoryDto {}
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator'; 
+
+export class CreateBookCategoryDto {
+  @IsString()    
+  @IsNotEmpty()  
+  name: string;
+
+  @IsString()    
+  @IsOptional() 
+  description?: string;
+}
+
+//3.2 สร้างกฎ
