@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm'; 
 import { BookCategoryModule } from './book-category/book-category.module';
 import { BookCategory } from './book-category/entities/book-category.entity';
+import { BookModule } from './book/book.module';
+import { Book } from './book/entities/book.entity';
 
 @Module({
   imports: [
@@ -14,10 +16,11 @@ import { BookCategory } from './book-category/entities/book-category.entity';
       username: 'admin',
       password: 'password123',
       database: 'bookstore_dev',
-      entities: [BookCategory],
+      entities: [BookCategory, Book],
       synchronize: true,
     }),
     BookCategoryModule,
+    BookModule,
   ],
   controllers: [AppController],
   providers: [AppService],

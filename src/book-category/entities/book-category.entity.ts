@@ -2,20 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 
 @Entity()
 export class BookCategory {
-  @PrimaryGeneratedColumn('uuid') 
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column() 
+  @Column()
   name: string;
 
-  @Column({ nullable: true }) 
+  @Column({ nullable: true })
   description: string;
 
-  @CreateDateColumn() 
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn() 
+  @UpdateDateColumn()
   updatedAt: Date;
 }
-
-//กำหนดหน้าตารางแยกหนังสือ
