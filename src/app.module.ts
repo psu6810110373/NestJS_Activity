@@ -6,18 +6,27 @@ import { BookCategoryModule } from './book-category/book-category.module';
 import { BookCategory } from './book-category/entities/book-category.entity';
 import { BookModule } from './book/book.module';
 import { Book } from './book/entities/book.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'password123',
-      database: 'bookstore_dev',
-      entities: [BookCategory, Book],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [BookCategory, Book],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     BookCategoryModule,
     BookModule,
