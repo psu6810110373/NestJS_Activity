@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -6,6 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { UserRole } from 'src/user/entities/user.entity';
 import { Roles } from 'src/auth/roles.decorator';
+import { CurrentUser } from 'src/auth/current-user.decorator';
 
 @Controller('book')
 export class BookController {
@@ -28,11 +29,6 @@ export class BookController {
     return this.bookService.findOne(id);
   }
 
-  @Patch(':id/like')
-  like(@Param('id') id: string) {
-    return this.bookService.like(id);
-  }
-
   @UseGuards(AuthGuard('jwt'),RolesGuard)
   @Roles(UserRole.ADMIN)
   @Patch(':id')
@@ -45,5 +41,11 @@ export class BookController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.bookService.remove(id);
+  }
+
+  @UseGuards(AuthGuard('jwt')) 
+  @Patch(':id/like') 
+  async toggleLike(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.bookService.toggleLike(id, user.userId);
   }
 }

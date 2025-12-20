@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { BookCategory } from '../../book-category/entities/book-category.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Book { // <--- ดูชื่อคลาสดีๆ ต้องเป็น Book เฉยๆ
@@ -23,4 +24,8 @@ export class Book { // <--- ดูชื่อคลาสดีๆ ต้อง
 
   @Column({ nullable: true })
   categoryId: string;
+
+  @ManyToMany (() => User, (user) => user.likedBooks)
+  @JoinTable()
+  likedBy: User[];
 }

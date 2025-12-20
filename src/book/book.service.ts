@@ -41,6 +41,26 @@ export class BookService {
     return this.bookRepository.save(book);
   }
 
+  async toggleLike(bookId: string, userId: string){
+    const book = await this.bookRepository.findOne({
+      where: {id: bookId},
+      relations: ['likedBy'],
+    });
+    if (!book) {
+      throw new Error('Book not found');
+    }
+    const userIndex = book.likedBy.findIndex((u) => String(u.id) === String(userId));
+    if (userIndex !== -1) {
+      book.likedBy.splice(userIndex,1);
+      console.log('Unliked!');
+    }else {
+      book.likedBy.push({ id: userId } as any);
+      console.log('Liked!');
+    }
+    book.likeCount = book.likedBy.length;
+    return this.bookRepository.save(book);
+  }
+
   update(id: string, updateBookDto: UpdateBookDto) { 
     return this.bookRepository.update(id, updateBookDto);
   }
