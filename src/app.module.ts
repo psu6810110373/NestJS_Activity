@@ -9,6 +9,7 @@ import { Book } from './book/entities/book.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
+import { UsersModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { User } from './user/entities/user.entity';
     BookCategoryModule,
     BookModule,
     AuthModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
